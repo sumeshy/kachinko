@@ -1,0 +1,40 @@
+// kachinko.hsp
+
+#packopt name "kachinko"
+;#packopt icon "kachinko16.ico"
+#packopt icon "kachinko32.ico"
+
+#const global MESBOX_REWRITABLE 1
+
+*start
+	screen 0, 300,300
+	title "kachinko.exe"
+	screen 1, 1500,500, SCREEN_HIDE, 1920/2-750, 1080/2-250
+	title "kachinko.exe -- action!"
+	gsel 0
+
+*write
+	sdim bigtitle, 100
+	sdim description, 1000
+	input bigtitle, 300, 24, 100
+	mesbox description, 300, 200, MESBOX_REWRITABLE, 1000
+	button goto "Ctrl+Enter", *clap
+	goto *wait4enter
+
+*wait4enter
+	wait 5
+	stick stic,64:if (stic&(32+64)) == 32+64 {
+		goto *clap
+	}
+	goto *wait4enter
+
+*clap
+	gsel 0, -1
+	gsel 1, 2
+	font MSGOTHIC
+	
+	color 0, 0, 0: boxf
+	color 255, 255, 255: font MSGOTHIC, 144, FONT_BOLD: pos 100,50: mes bigtitle
+	font MSGOTHIC, 64: pos 160, 210: mes description
+	pos 400,400: mes strf("%04d/%02d/%02d %02d:%02d", gettime(0), gettime(1), gettime(3), gettime(4), gettime(5))
+	stop
